@@ -72,6 +72,25 @@ async function deleteTaskHandler(req,res) {
     }
 }
 
+
+const reservas = [
+    {
+        "id": "1", // id numérico único que representa el tuno
+        "datetime": "2022-09-02T19:58:10.406Z", // formato ISO String
+        "userId": "2", // id de usuario si está registrado, o 0 si no lo está
+        "email": "email@gmail.com", // email del usuario
+        "branchId": "3" // id de la sucursal
+    },
+    {
+        "id": "2", 
+        "datetime": "2022-09-02T19:58:10.406Z", 
+        "userId": "3", 
+        "email": "email@gmail.com", 
+        "branchId": "3" 
+    }
+]
+    
+
 const server = http.createServer((req,res) => {
 
     const { url, method} = req;
@@ -81,25 +100,26 @@ const server = http.createServer((req,res) => {
 
     switch(method) {
         case "GET":
-            if(url === "/") {
+            if(url === "/reservas") {
+                // pedir al modulo de reservas
+                
+
                 res.writeHead(200, {'Content-Type': 'application/json'})
-                res.write(JSON.stringify({message: "hola mundo"}))
+                res.write(JSON.stringify(reservas))
                 res.end();
             }
-            if(url === "/task") {
-                getTaskHandler(req,res);
+            if(url === "/sucursales") {
+                // sucursales
+                // pedir por http al modulo de sucursales
+                // retornar las sucursales
             }
             break;
         case "POST":
-            if(url === "/task"){
-                createTaskHandler(req,res);
+            if(url === "/reservas"){
+                // agregar turno
+                // 
             }
             break;
-        case "PUT":
-            updateTaskHanlder(req,res);
-            break;
-        case "DELETE":
-            deleteTaskHandler(req,res);
         default:
             res.writeHead(404, {'Content-Type': 'text/plain'})
             res.write("404 NOT FOUND")
