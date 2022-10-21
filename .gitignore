@@ -1,1 +1,5 @@
 /apiGateway/node_modules
+/servicios/gestionSucursales/node_modules
+/servicios/gestionReservas/node_modules
+/servicios/gestionRecordatorios/node_modules
+/servicios/gestionNotificaciones/node_modules
