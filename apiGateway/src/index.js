@@ -102,16 +102,19 @@ const server = http.createServer((req,res) => {
         case "GET":
             if(url === "/reservas") {
                 // pedir al modulo de reservas
+                pedir(5000);
                 
-
+                /*
                 res.writeHead(200, {'Content-Type': 'application/json'})
                 res.write(JSON.stringify(reservas))
                 res.end();
+                */
             }
             if(url === "/sucursales") {
                 // sucursales
                 // pedir por http al modulo de sucursales
                 // retornar las sucursales
+                pedir(4000);
             }
             break;
         case "POST":
@@ -119,6 +122,12 @@ const server = http.createServer((req,res) => {
                 // agregar turno
                 // 
             }
+            break;
+        case "PUT":
+            //agregar turno
+            
+            break;
+        case "DELETE":
             break;
         default:
             res.writeHead(404, {'Content-Type': 'text/plain'})
@@ -129,4 +138,44 @@ const server = http.createServer((req,res) => {
 })
 
 server.listen(3000);
-console.log("Server en el puerto 3000")
+console.log("Server en el puerto 3000");
+
+
+/*
+function pedirSucursales(){
+    let body = '';
+    const request = http.request('http://localhost:4000/', {method: 'GET'}, function(response){
+        
+
+        response
+            .on('data', chunk => {
+                body += chunk;
+            })
+            .on('end', () => {
+                request.body = JSON.parse(body);
+                //console.log(body);
+            })
+    });
+    //console.log(request.body);
+    //request.write("hola");
+    request.end();
+}
+
+*/
+
+function pedir(puer){
+    let body = '';
+    const request = http.request(`http://localhost:${puer}/`, {method: 'GET'}, function(response){
+        
+
+        response
+            .on('data', chunk => {
+                body += chunk;
+            })
+            .on('end', () => {
+                request.body = JSON.parse(body);
+                console.log(request.body);
+            })
+    });
+    request.end();
+}
