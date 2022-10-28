@@ -3,13 +3,13 @@ console.log("Gestion Reservas");
 
 const http = require("http");
 const fs = require('fs');
+const path = require('path');
 
 
 
 
 function cargaReservas(request,response){
-    let reservasJson = fs.readFileSync('./servicios/reservas.json');
-
+    let reservasJson = fs.readFileSync(path.join(__dirname + '/../../reservas.json'));
     let body = '';
 
     request
