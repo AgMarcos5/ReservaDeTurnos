@@ -7,9 +7,10 @@ const headers = {
     'Access-Control-Max-Age': 2592000, // 30 days
 };
 
-const getReservas = (req,res) => {
+const getReservas = async (req,res) => {
     res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-    const reservas = reservasService.getReservas();
+    const reservas = await reservasService.getReservas();
+    console.log("controller", reservas)
     res.write(JSON.stringify(reservas));
     res.end();
 }

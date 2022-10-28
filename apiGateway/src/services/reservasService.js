@@ -48,13 +48,19 @@ const reservas = [
 ]
     
 
-const getReservas = () => {
+const getReservas = async () => {
     /*
     ACÁ HAY QUE OBTENER TODAS LAS RESERVAS 
     HACIENDO UNA PETICIÓN HTTP AL MICROSERVICIO DE 
     GESTION RESERVAS
     */
-    return reservas;
+   try {
+    const data = await getData(5000);
+    console.log("getReservas",data)
+    return data;
+   } catch (error) {
+    console.log(error)
+   }
 }
 
 const getReservasUsuario = () => {
