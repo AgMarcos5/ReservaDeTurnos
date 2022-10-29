@@ -1,51 +1,76 @@
 const http = require("http");    
-const { getReservas, getReservasUsuario } = require("./controllers/reservasController");
+
+const { getTurnos, getReservaByID, altaReserva, bajaReserva } = require("./controllers/reservas");
+const { getSucursales, getSucursal } = require("./controllers/sucursales");
+
 
 
 const error = (req,res) => {
-    res.writeHead(404, {'Content-Type': 'text/plain'})
-    res.write("404 NOT FOUND")
+    res.writeHead(404, {'Content-Type': 'application/json'})
+    res.write(JSON.stringify({
+        messageError: "error"
+    }))
     res.end();
 }
 
 
-const server = http.createServer((req,res) => {
+const server = http.createServer( async (req,res) => {
 
-    const { url, method} = req;
-
+    const {url, method} = req;
+    
     const idQuery = url.split("/api/")[1];
-    const idKey = idQuery?.split("/")[0];    // reserva / sucursales
-    const idValue = idQuery?.split("/")[1];  // id
+    const service = idQuery?.split(/[/?]/)[0];    // reserva / sucursales
+    const params = idQuery?.split(/[/?]/)[1];  // ID || query params
 
-    // Logger
+
     console.log(`URL: ${url} - Method: ${method}`)
 
-    switch(method) {
+
+    switch (method) {
         case "GET":
-            if(url === "/api/reserva") {
-                // Todas las reservas
-                getReservas(req,res);
+            if(
+                (url === '/api/reserva') || 
+                (url === `/api/reserva?${params}`)
+            ) {
+                // Get Reservas
+                getTurnos(req,res, params);
             } 
-            else if(url === `/api/reserva/${idValue}`) {
-                // Reservas de un usuario
-                getReservasUsuario(req,res);
+            else if(url === `/api/reserva/${params}`) {
+                // Reservas de un usuario por ID
+                getReservaByID(req,res,params);
             }
             else if(url === "/api/sucursales") {
-                console.log("/api/sucursales")
+                // Todas las sucursales
+                getSucursales(req,res)
+            }
+            else if(url === `/api/sucursales/${params}`) {
+                // Sucursal por ID
+                getSucursal(req,res,params)
             }
             else{
                 error(req,res)
             }
             break;
         case "POST":
+            if(url === `/api/reserva/${params}`) {
+                // Crear una reserva
+                altaReserva(req,res,params);
+            } 
             break;
-        case "PUT":            
+        case "PUT":
+                // Modificar una reserva
             break;
         case "DELETE":
+            if(url === `/api/reserva/${params}`) {
+                // Borrar una reserva
+                bajaReserva(req,res,params);
+            } 
             break;
+    
         default:
-            error(req,res)
+            break;
     }
+    
 
 })
 
