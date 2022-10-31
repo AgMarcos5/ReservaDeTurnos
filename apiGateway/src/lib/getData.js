@@ -12,10 +12,17 @@ const getData = ({hostname, port, path, method, body = null}) => {
                     request.body = JSON.parse(body);
                     resolve(request.body)
                 })
+                .on('error', err => {
+                    reject();
+                })
         });
 
         if( method === 'POST' )
             request.write(JSON.stringify(body))
+
+        request.on('error', () => {
+            reject("error al conectar");
+        })
 
         request.end();
     })

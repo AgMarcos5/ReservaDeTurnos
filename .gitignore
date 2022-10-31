@@ -1,4 +1,6 @@
 /apiGateway/node_modules
+/apiGateway/.env
+
 /servicios/gestionSucursales/node_modules
 /servicios/gestionReservas/node_modules
 /servicios/gestionRecordatorios/node_modules

@@ -2,11 +2,12 @@ import {getData} from './getData.js'
 
 let turnos = [];
 
-const initTurnos = (async () => {
+const initTurnos = async () => {
 
     turnos = await getData("http://localhost:3000/api/reserva")
     console.log(turnos)
-    
+
+    listaTurnos.innerHTML = '';
     turnos.map( turno => {
 
         const ocupado = turno.userId != null ? 'ocupado' : '';
@@ -29,16 +30,18 @@ const initTurnos = (async () => {
           turno.classList.add("selected");
         });
     });
-    
    
-}) ();
+};
+
+initTurnos();
 
 
 
-
+// FORMULARIO RESERVA DE TURNOS 
 reservaForm.addEventListener('submit', (e) => {
     e.preventDefault();
     reservarTurno();
+    initTurnos();
 })
 
 const reservarTurno = () => {

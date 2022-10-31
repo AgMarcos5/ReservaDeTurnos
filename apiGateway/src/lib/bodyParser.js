@@ -10,7 +10,6 @@ function bodyParser(request) {
             resolve();
         })
         .on('error', err => {
-            console.log(err);
             reject();
         })
    })

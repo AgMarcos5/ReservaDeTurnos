@@ -1,18 +1,11 @@
 const http = require("http");    
+const { config } = require("./config");
 
 const { getTurnos, getReservaByID, altaReserva, bajaReserva } = require("./controllers/reservas");
 const { getSucursales, getSucursal } = require("./controllers/sucursales");
+const { responseError } = require("./lib/error");
 
-
-
-const error = (req,res) => {
-    res.writeHead(404, {'Content-Type': 'application/json'})
-    res.write(JSON.stringify({
-        messageError: "error"
-    }))
-    res.end();
-}
-
+const PORT = config.PORT ;
 
 const server = http.createServer( async (req,res) => {
 
@@ -48,7 +41,7 @@ const server = http.createServer( async (req,res) => {
                 getSucursal(req,res,params)
             }
             else{
-                error(req,res)
+                responseError(res, "path incorrecto")
             }
             break;
         case "POST":
@@ -56,6 +49,9 @@ const server = http.createServer( async (req,res) => {
                 // Crear una reserva
                 altaReserva(req,res,params);
             } 
+            else{
+                responseError(res, "path incorrecto")
+            }
             break;
         case "PUT":
                 // Modificar una reserva
@@ -65,14 +61,18 @@ const server = http.createServer( async (req,res) => {
                 // Borrar una reserva
                 bajaReserva(req,res,params);
             } 
+            else{
+                responseError(res, "path incorrecto")
+            }
             break;
     
         default:
+            responseError(res, "petición incorrecta")
             break;
     }
     
 
 })
 
-server.listen(3000);
-console.log("Api Gateway en el puerto 3000");
+server.listen(PORT);
+console.log(`Api Gateway en el puerto ${PORT}`);
