@@ -2,6 +2,10 @@
 /apiGateway/.env
 
 /servicios/gestionSucursales/node_modules
+/servicios/gestionSucursales/.env
+
 /servicios/gestionReservas/node_modules
+
 /servicios/gestionRecordatorios/node_modules
+
 /servicios/gestionNotificaciones/node_modules

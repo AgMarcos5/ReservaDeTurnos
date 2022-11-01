@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const { config } = require('../config');
+const { responseError } = require('./error');
 
+const {PATH_JSON} = config;
 
 const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -10,36 +13,35 @@ const headers = {
 
 
 function getSucursales(req, res) {
-    let sucursalesJson = fs.readFileSync(path.join(__dirname + '/../../sucursales.json'));
-    res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-    res.write(sucursalesJson);
-    res.end();    
+    try {
+        let sucursalesJson = fs.readFileSync(path.join(__dirname + PATH_JSON));
+        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
+        res.write(sucursalesJson);
+        res.end();  
+    } catch (error) {
+        responseError(res,"No se encuentra el archivo de sucursales")
+    }
+      
 }
 
-
 function getSucursal(req, res, ID) {
-    let sucursalesJson = fs.readFileSync(path.join(__dirname + '/../../sucursales.json'));
-    const sucursales = JSON.parse(sucursalesJson);
+    try {
+        let sucursalesJson = fs.readFileSync(path.join(__dirname + PATH_JSON));
+        const sucursales = JSON.parse(sucursalesJson);
 
-    const sucursal = sucursales.find( (element)=> {
-        if(element.id == ID) {
-            return element;
-        }
-        else {
-            return false;
-        }
-    });
+        const sucursal = sucursales.find( element => element.id === ID)
 
-    res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-    if(sucursal) {
-        res.write(JSON.stringify(sucursal));
+        if(sucursal){
+            res.writeHead(200, { ...headers, "Content-Type": "application/json" });
+            res.write(JSON.stringify(sucursal));
+            res.end();
+        }
+        else{
+            responseError(res,"No se encuentra la sucursal")
+        }
+    } catch (error) {
+        responseError(res,"No se encuentra el archivo de sucursales")
     }
-    else {
-        res.write(JSON.stringify({
-            messageError: "error"
-        }))
-    }
-    res.end();
 }
 
 
