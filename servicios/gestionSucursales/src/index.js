@@ -2,6 +2,7 @@ const http = require("http");
 const { config } = require("./config");
 const { responseError } = require("./lib/error");
 const { getSucursales, getSucursal } = require("./lib/getData");
+const { initMaps } = require("./lib/maps");
 
 const {SUCURSALES_PORT} = config;
 
@@ -36,3 +37,6 @@ const server = http.createServer((req, res) => {
 
 server.listen(SUCURSALES_PORT);
 console.log(`Gestion Sucursales en el puerto ${SUCURSALES_PORT}`);
+
+// MAPAS
+initMaps();
