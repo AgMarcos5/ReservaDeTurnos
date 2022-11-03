@@ -5,6 +5,7 @@
 /servicios/gestionSucursales/.env
 
 /servicios/gestionReservas/node_modules
+/servicios/gestionReservas/.env
 
 /servicios/gestionRecordatorios/node_modules
 

@@ -1,34 +1,63 @@
-console.log("Gestion Reservas");
-
-
 const http = require("http");
-const fs = require('fs');
-const path = require('path');
+const _url_ = require('url')
+const { config } = require("./config")
+const { responseError } = require("./lib/error");
+const { getReservasUsuario, reservasHandler, getTurnos } = require('./lib/getData')
 
 
+const {RESERVAS_PORT} = config;
 
 
-function cargaReservas(request,response){
-    let reservasJson = fs.readFileSync(path.join(__dirname + '/../../reservas.json'));
+const server = http.createServer((req,res) => {
+
+    const {url, method} = req;
     
-    let body = '';
+    const idQuery = url.split("/api/reservas")[1];
+    const params = idQuery?.split(/[/?]/)[1];  // ID || query params
 
-    request
-        .on('data', chunk => {
-            body += chunk;
-        })
-        .on('end', () => {
-            response.end(reservasJson);
-        })
-        .on('close', () => {
+    
+    console.log(`URL: ${url} - Method: ${method}`)
 
-        })
-}
+    switch(method) {
+        case "GET":
+            if((url === '/api/reservas') || (url === `/api/reservas?${params}`)) {
+                // Filtro por queryParams
+                const queryObject = _url_.parse(url,true).query;
+                const empty_qp = {userId:'', branchId:'', datetime:''}
+                const queryParams = Object.assign({},empty_qp,queryObject)
+                getTurnos(req,res,queryParams);
+            }   
+            else if(url === `/api/reservas/${params}`) {
+                // Reservas de un usuario
+                getReservasUsuario(req,res,params);
+            }
+            else{
+                responseError(res, "Ruta inválida")
+            }
+            break;
+        case "POST":
+            if(url === `/api/reservas/${params}`) {
+                // Agregar una reserva
+                reservasHandler(req,res,params,'POST');
+            }
+            else {
+                responseError(res, "Ruta inválida")
+            }
+            break;
+        case "DELETE":
+            if(url === `/api/reservas/${params}`) {
+                // Borrar una reserva
+                reservasHandler(req,res,params,'DELETE');
+            }
+            else {
+                responseError(res, "Ruta inválida")
+            }
+            break;
+        default:
+            responseError(res,"Petición inválida")
+    }
 
-
-const server = http.createServer((request, response) => {
-    cargaReservas(request,response);
 })
 
-server.listen(5000);
-console.log("Server en el puerto 5000");
+server.listen(RESERVAS_PORT);
+console.log(`Gestión Reservas en el puerto ${RESERVAS_PORT}`);
