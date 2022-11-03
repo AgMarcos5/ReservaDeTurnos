@@ -5,7 +5,9 @@ let turnos = [];
 
 const initTurnos = async () => {
 
-    turnos = await getData("http://localhost:3000/api/reserva")
+    turnos = await getData("http://localhost:3000/api/reservas")
+
+    console.log("turnos",turnos)
 
     listaTurnos.innerHTML = '';
     turnos.map( turno => {

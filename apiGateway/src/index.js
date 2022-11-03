@@ -22,13 +22,13 @@ const server = http.createServer( async (req,res) => {
     switch (method) {
         case "GET":
             if(
-                (url === '/api/reserva') || 
-                (url === `/api/reserva?${params}`)
+                (url === '/api/reservas') || 
+                (url === `/api/reservas?${params}`)
             ) {
                 // Get Reservas
                 getTurnos(req,res, params);
             } 
-            else if(url === `/api/reserva/${params}`) {
+            else if(url === `/api/reservas/${params}`) {
                 // Reservas de un usuario por ID
                 getReservaByID(req,res,params);
             }
@@ -45,7 +45,7 @@ const server = http.createServer( async (req,res) => {
             }
             break;
         case "POST":
-            if(url === `/api/reserva/${params}`) {
+            if(url === `/api/reservas/${params}`) {
                 // Crear una reserva
                 altaReserva(req,res,params);
             } 
@@ -57,7 +57,7 @@ const server = http.createServer( async (req,res) => {
                 // Modificar una reserva
             break;
         case "DELETE":
-            if(url === `/api/reserva/${params}`) {
+            if(url === `/api/reservas/${params}`) {
                 // Borrar una reserva
                 bajaReserva(req,res,params);
             } 

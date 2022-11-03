@@ -22,11 +22,11 @@ const getTurnos = async (req,res, queryParams=null) => {
         const data = await getData({
             ...req,
             ...options, 
-            path: `/api/reserva${qp}`, 
+            path: `/api/reservas${qp}`, 
             method: "GET"
         });
 
-        console.log(`/api/reserva${qp}`)
+        console.log(`/api/reservas${qp}`)
         
         res.writeHead(200, { ...headers, "Content-Type": "application/json" });
         res.write(JSON.stringify(data));
@@ -41,7 +41,7 @@ const getReservaByID = async (req,res,ID) => {
         const data = await getData({
             ...req,
             ...options, 
-            path: `/api/reserva/${ID}`, 
+            path: `/api/reservas/${ID}`, 
             method: "GET"
         });
         
@@ -60,7 +60,7 @@ const altaReserva = async (req,res,ID) => {
         const data = await getData({
             ...req,
             ...options, 
-            path: `/api/reserva/${ID}`, 
+            path: `/api/reservas/${ID}`, 
             method: "POST", 
         });
         
@@ -77,7 +77,7 @@ const bajaReserva = async (req,res,ID) => {
         const data = await getData({
             ...req,
             ...options, 
-            path: `/api/reserva/${ID}`, 
+            path: `/api/reservas/${ID}`, 
             method: "DELETE"
         });
         

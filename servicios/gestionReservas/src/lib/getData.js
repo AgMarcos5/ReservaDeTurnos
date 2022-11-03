@@ -75,59 +75,47 @@ const reservasHandler = async (req,res,ID,method) => {
 }
 
 
+const filterByQP = (array,param,value) => {
+    if( value != ''){
+        if(param === 'datetime') {  // Caso datetime
+            const valueDate = new Date(value).toISOString().split('T')[0];
+            return array.filter( turno => {
+                const turnoDate = new Date(turno[param]).toISOString().split('T')[0];
+                return valueDate === turnoDate;
+            })
+        }
+        else{ // Caso userId o branchId
+            return array.filter( turno => turno[param] === value)
+        }
+    }
+    return array;
+} 
+
 const getTurnos = (req,res,queryParams) => {
-    type = ['usuario','sucursal','turno'];
-    error = 0;
-    
     try{
-        let turnosJSON = fs.readFileSync(path.join(__dirname + PATH_JSON));
+        const turnosJSON = fs.readFileSync(path.join(__dirname + PATH_JSON));
         const turnos = JSON.parse(turnosJSON);
-    
-        let filter_userTurnos = [];
-        let filter_branchId = [];
-        let filter_dateTime = [];
 
-        // filtro por userId
-        if(queryParams.userId != ''){
-            filter_userTurnos = turnos.filter(chain => chain.userId === queryParams.userId);
-            if(!filter_userTurnos.length)
-                error = 1;
-        }
-        else
-            filter_userTurnos = turnos.filter(chain => chain.userId == -1);
+        let turnosFiltrados = turnos;
 
-        // filtro por sucursal
-        if (!error && queryParams.branchId != ''){
-            filter_branchId = filter_userTurnos.filter(chain => chain.branchId === queryParams.branchId);
-            if(!filter_branchId.length)
-                error = 2;
+        // Recorro todos los query params y los filtro
+        for (const param in queryParams) {
+            const value = queryParams[param];
+            turnosFiltrados = filterByQP(turnosFiltrados,param,value)
         }
-        else
-            filter_branchId = filter_userTurnos;
 
-        // filtro por fecha    
-        if (!error && queryParams.datetime != ''){
-            let queryDate = queryParams.datetime.split('T')[0];
-            filter_dateTime = filter_branchId.filter(chain => chain.datetime.split('T')[0] === queryDate);
-            if(!filter_dateTime.length)
-                error = 3;
-        }
-        else
-            filter_dateTime = filter_branchId;
-        
-        
-        if(!error){
+        if(turnosFiltrados.length){
             res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-            res.write(JSON.stringify(filter_dateTime));
+            res.write(JSON.stringify(turnosFiltrados));
             res.end();
         }
-        else // No existe usuario | sucursal | fecha
-            responseError(res,`No existe ${type[error-1]}`)
-
+        else 
+            responseError(res,"No hay turnos")
     } catch (error) {
         responseError(res,"No se encuentra el archivo de reservas")
     }
 }
+
 
 
 module.exports = {

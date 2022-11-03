@@ -7,7 +7,6 @@ const {PATH_JSON, MAP_ID, MAP_BASEURL} = config;
 const initMaps = () => {
     try {
         const sucursales = JSON.parse(fs.readFileSync(path.join(__dirname + PATH_JSON)));
-        console.log(sucursales)
 
         // GET markers del mapa
         // eliminar los repetidos en sucursales y markers
