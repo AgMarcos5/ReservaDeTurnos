@@ -1,9 +1,11 @@
 const https = require('https')
+const fs = require('fs');
+const path = require('path');
 const { responseError } = require("./error");
 const { bodyParser } = require('./bodyParser')
 const { config } = require("../config")
 
-const { API_KEY,URL_SENDGRID,PATH_SENDGRID,MAIL_STRUCT } = config
+const { SENDGRID_API_KEY,SENDGRID_URL,SENDGRID_PATH,PATH_JSON } = config
 
 const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -12,11 +14,11 @@ const headers = {
 };
 
 const options = {
-    hostname: URL_SENDGRID,
-    path: PATH_SENDGRID,
+    hostname: SENDGRID_URL,
+    path: SENDGRID_PATH,
     method: 'POST',
     headers: {
-        'Authorization': 'Bearer '+ API_KEY,
+        'Authorization': 'Bearer '+ SENDGRID_API_KEY,
         "Content-Type": "application/json"
     }
 }
@@ -52,15 +54,15 @@ const buildMail = async (req) => {
     
     try{
         await bodyParser(req);
+        
+        let mailJSON = fs.readFileSync(path.join(__dirname + PATH_JSON));
+        const mail = JSON.parse(mailJSON);
     
-        const mail = MAIL_STRUCT;
-        const mailJSON = JSON.parse(mail);
+        mail.personalizations.find(element => element.to).to.find(element => element.email = req.body.destinatario);
+        mail.subject = req.body.asunto;
+        mail.content.find(element => element.value = req.body.cuerpo);
 
-        mailJSON.personalizations.find(element => element.to).to.find(element => element.email = req.body.destinatario);
-        mailJSON.subject = req.body.asunto;
-        mailJSON.content.find(element => element.value = req.body.cuerpo);
-
-        return mailJSON;
+        return mail;
     }
     catch(error){
         responseError(res,error);

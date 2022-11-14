@@ -5,10 +5,10 @@ require('dotenv').config();
 
 const config = {
     NOTIFICACIONES_PORT : process.env.NOTIFICACIONES_PORT || 7000,
-    API_KEY : process.env.API_KEY,
-    URL_SENDGRID : process.env.URL_SENDGRID,
-    PATH_SENDGRID : process.env.PATH_SENDGRID,
-    MAIL_STRUCT : process.env.MAIL_STRUCT
+    SENDGRID_API_KEY : process.env.SENDGRID_API_KEY,
+    SENDGRID_URL : process.env.SENDGRID_URL,
+    SENDGRID_PATH : process.env.SENDGRID_PATH,
+    PATH_JSON : '/../bodyMail.json'
 }
 
 module.exports = {

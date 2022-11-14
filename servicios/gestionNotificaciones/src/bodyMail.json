@@ -1,0 +1,22 @@
+{
+    "personalizations": [
+        {
+            "to": [
+                {
+                    "email": ""
+                }
+            ]
+        }
+    ],
+    "from": {
+        "email": "booking.ssdd@hotmail.com",
+        "name": "Booking SSDD"
+    },
+    "subject": "",
+    "content": [
+        {
+        "type": "text/html",
+        "value": ""
+        }
+    ]
+}
