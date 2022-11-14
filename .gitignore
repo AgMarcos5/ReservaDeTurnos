@@ -10,3 +10,4 @@
 /servicios/gestionRecordatorios/node_modules
 
 /servicios/gestionNotificaciones/node_modules
+/servicios/gestionNotificaciones/.env
