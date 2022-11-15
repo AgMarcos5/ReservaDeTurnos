@@ -1,44 +1,50 @@
 [
     {
-        "id": "1",
-        "datetime": "2022-09-02T19:58:10.406Z",
+        "idReserva": "1",
+        "dateTime": "2022-09-02T19:58:10.406Z",
         "userId": -1,
         "email": -1,
-        "branchId": "4"
+        "branchId": "4",
+        "status": "0"
     },
     {
-        "id": "2",
-        "datetime": "2022-11-02T19:58:10.406Z",
+        "idReserva": "2",
+        "dateTime": "2022-11-11T19:58:10.406Z",
         "userId": "2",
         "email": "email@gmail.com",
-        "branchId": "3"
+        "branchId": "3",
+        "status": "2"
     },
     {
-        "id": "3",
-        "datetime": "2022-11-02T19:58:10.406Z",
+        "idReserva": "3",
+        "dateTime": "2022-11-11T19:58:10.406Z",
         "userId": -1,
         "email": -1,
-        "branchId": "3"
+        "branchId": "3",
+        "status": "0"
     },
     {
-        "id": "4",
-        "datetime": "2022-11-02T19:58:10.406Z",
+        "idReserva": "4",
+        "dateTime": "2022-11-02T19:58:10.406Z",
         "userId": -1,
         "email": -1,
-        "branchId": "3"
+        "branchId": "3",
+        "status": "0"
     },
     {
-        "id": "5",
-        "datetime": "2022-09-02T19:58:10.406Z",
+        "idReserva": "5",
+        "dateTime": "2022-11-15T19:58:10.406Z",
         "userId": "3",
-        "email": "email@gmail.com",
-        "branchId": "3"
+        "email": "vilamartin21@gmail.com",
+        "branchId": "3",
+        "status": "2"
     },
     {
-        "id": "6",
-        "datetime": "2022-09-02T19:58:10.406Z",
+        "idReserva": "6",
+        "dateTime": "2022-09-02T19:58:10.406Z",
         "userId": -1,
         "email": -1,
-        "branchId": "3"
+        "branchId": "3",
+        "status": "0"
     }
 ]
