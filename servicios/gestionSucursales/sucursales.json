@@ -10,5 +10,17 @@
         "lat": "-38.012061",
         "lng": "-57.5835651", 
         "name": "Sucursal del sur"
+    },
+    {
+        "id": "4", 
+        "lat": "-38.012061",
+        "lng": "17.5835651", 
+        "name": "Sucursal del oeste"
+    },
+    {
+        "id": "5", 
+        "lat": "49.012061",
+        "lng": "-50.5835651", 
+        "name": "Sucursal del este"
     }
 ]
