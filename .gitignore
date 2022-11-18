@@ -10,4 +10,9 @@
 /servicios/gestionRecordatorios/node_modules
 
 /servicios/gestionNotificaciones/node_modules
+<<<<<<< HEAD
 /servicios/gestionNotificaciones/.env
+=======
+
+/clienteWeb/node_modules
+>>>>>>> 5fd8306 (frontend 50%)

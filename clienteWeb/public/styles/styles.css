@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+@import url("./turnos.css");
+
+:root{
+    --black: #000;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    
+    font-family: 'DM Sans', sans-serif;
+    color: var(--black);
+}
+
+/* HEADER */
+header{
+    position: relative;
+}
+.headerContent{
+    width: 100%;
+    height: 600px;
+    z-index: 2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+nav{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  
+  nav li {
+    float: left;
+    margin-right: 20px;
+  }
+
+  nav li.right{
+    float: right;
+    margin: 0;
+  }
+  
+  nav li a {
+    display: block;
+    color: white;
+    font-weight: 500;
+    line-height: 1.2;
+    font-size: 14px;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: .2s;
+  }
+  
+  nav li.right a {
+    border: 1px solid;
+}
+  
+  nav li a:hover {
+     color: #181818bb; 
+     background-color: white;
+  }
+
+
+.headerContent h1{
+    font-family: 'DM Sans', sans-serif;
+    color: #fff;
+    font-size: 75px;
+    font-weight: 700;
+    line-height: 74px;
+    margin-top: 150px;
+}
+
+/*OPTIONS*/
+.headerContent .options{
+    background: #fff;
+    border: 1px solid #dedede;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 5%);
+    border-radius: 70px;
+    display: flex;
+    margin-top: 40px;
+}
+
+.opt{
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    padding: 0 20px;
+}
+
+.form-dropdown{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-dropdown label{
+    font-weight: 500;
+}
+
+.form-dropdown input{
+    border: 0;
+}
+
+.form-dropdown input:focus{
+    outline: none;
+}
+
+.searchWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.searchWrapper .btn{
+    background: #3554d1;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    border-radius: 70px;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    transition: all .2s;
+    padding: 15px 35px;
+}
+
+
+.searchWrapper .btn:hover{
+    background: #2c46b1;
+}
+
+/*FIN OPTIONS*/
+
+.headerBGFilter{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(31,31,31,1) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+.headerBG{
+    background-image: url("../images/bgSDTurnos.jpg");
+    width: 100%;
+    height: 100%;
+    background-position: 50% 42%;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+
+/* INDEX    */
+
+section{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: -55px;
+    background: white;
+    z-index: 1;
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 0 0 20px 0px #00000033;
+}
+
+.reservas{
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.col{
+    width: 50%;
+}
+
+
+
+
+
+/* FOOTER */
+
+footer{
+    text-align: center;
+}
