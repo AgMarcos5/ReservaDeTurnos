@@ -54,13 +54,32 @@ const getReservaByID = async (req,res,ID) => {
 }
 
 
-const altaReserva = async (req,res,ID) => {
+
+const solicitarReserva = async (req,res,ID) => {
     try {
         await bodyParser(req)
         const data = await getData({
             ...req,
             ...options, 
-            path: `/api/reservas/${ID}`, 
+            path: `/api/reservas/solicitar/${ID}`, 
+            method: "POST", 
+        });
+        
+        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data));
+        res.end();
+    } catch (error) {
+        responseError(res,error)
+    }
+}
+
+const confirmarReserva = async (req,res,ID) => {
+    try {
+        await bodyParser(req)
+        const data = await getData({
+            ...req,
+            ...options, 
+            path: `/api/reservas/confirmar/${ID}`, 
             method: "POST", 
         });
         
@@ -94,6 +113,7 @@ const bajaReserva = async (req,res,ID) => {
 module.exports = {
     getTurnos,
     getReservaByID,
-    altaReserva,
+    solicitarReserva,
+    confirmarReserva,
     bajaReserva,
 }
