@@ -1,9 +1,28 @@
 import { getPort, getUserId } from "./auth.js";
 import { initSucursales } from "./sucursales.js";
-import { initTurnos, turnos } from "./turnos.js";
+import { initTurnos, searchTurnos, turnos } from "./turnos.js";
+import { buildQuery } from "./utils.js";
 
-initSucursales();
-initTurnos();
+await initSucursales();
+await initTurnos();
+
+
+// BUSQUEDA
+const searchButton =  document.querySelector('.options .searchWrapper .btn');
+
+searchButton.addEventListener('click', () => {
+    const inputSucursal = document.querySelector('.options #option-sucursal input').id;
+    const inputDate = document.querySelector('.options #option-date input').value;
+
+    let queryParams = {
+        branchId : inputSucursal,
+        dateTime: inputDate
+    }
+    //searchTurnos(queryParams)
+
+    console.log(buildQuery(queryParams))
+    searchTurnos(buildQuery(queryParams))
+})
 
 
 // FORMULARIO RESERVA DE TURNOS 
@@ -23,9 +42,7 @@ const solicitarTurno = async() => {
         const listaTurnos = await turnos;
         const turnoSeleccionado = listaTurnos[id-1];
 
-        console.log(turnoSeleccionado)
-
-        if(turnoSeleccionado.status == 0){ // turno libre 
+        if(turnoSeleccionado.status == 0 && email){ // turno libre 
             const userId = getUserId();
             const port = getPort();
             const rawResponse = await fetch(`http://localhost:${port}/api/reservas/solicitar/${id}`, {
@@ -34,12 +51,50 @@ const solicitarTurno = async() => {
             });
             const content = await rawResponse.json();
 
-            console.log(content);
+            if(rawResponse.status === 200){
+                // Confirmar reserva
+                console.log("respuesta solicitar",content);
+                Swal.fire({
+                    title: 'Confirmar la reserva?',
+                    icon: 'question',
+                    confirmButtonText: 'Confirmar'
+                })
+                .then( ({isConfirmed}) => {
+                    console.log(isConfirmed)    
+                    if(isConfirmed){
+                        reservarTurno(port,id,{userId,email})
+                    }
+                })
+            }
+            else if(rawResponse.status === 400){
+                console.log("respuesta solicitar",content);
+                Swal.fire({
+                    title: 'Error',
+                    text: content.msg,
+                    icon: 'error',
+                    confirmButtonText: 'Confirmar'
+                })
+            }
+            
             
         }
     }
 }
 
-const reservarTurno = async () => {
+const reservarTurno = async (port,id,body) => {
+
+    const rawResponse = await fetch(`http://localhost:${port}/api/reservas/confirmar/${id}`, {
+        method: 'POST',
+        body: JSON.stringify(body)
+    });
+    const content = await rawResponse.json();
+
+    console.log("Reserva",content)
+
+    Swal.fire({
+        title: 'Reserva confirmada',
+        icon: 'success',
+        confirmButtonText: 'cerrar'
+    })
 
 }

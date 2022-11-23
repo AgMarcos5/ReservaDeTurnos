@@ -216,6 +216,7 @@ section{
 .reservas{
     padding: 10px;
     box-sizing: border-box;
+    padding-bottom: 50px;
 }
 
 .col h2{

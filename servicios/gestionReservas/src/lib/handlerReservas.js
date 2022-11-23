@@ -32,7 +32,7 @@ const _verify_ = (req,turnoRequired) => {
                 turnos.find(element => element.idReserva == turno.idReserva ? element = turno : false);
                 fs.writeFileSync(path.join(__dirname + PATH_JSON), JSON.stringify(turnos));
             }
-        },120000);
+        },/*120000*/60000);
     }
     else
         throw new Error();
@@ -74,7 +74,10 @@ const _confirm_ = (req,turno) => {
             <p><b>Booking SSDD</b>.</p>`,
         };
 
-        sendMail(options,mail);
+        sendMail(options,mail)
+            .catch((error) => {
+                console.log(error)
+            })
     }
     else
         throw new Error();
@@ -100,6 +103,7 @@ const reservasHandler = async (req,res,action,ID,method) => {
         const turnos = JSON.parse(turnosJSON);
         
         const turno = turnos.find(element => element.idReserva == ID);
+        let msg = ''
 
         if(turno){
             try {
@@ -107,11 +111,15 @@ const reservasHandler = async (req,res,action,ID,method) => {
                 switch(method) {
                     case 'POST':
                         
-                        if(action == 'solicitar')
+                        if(action == 'solicitar'){
                             _verify_(req,turno);
+                            msg = 'Reserva solicitada'
+                        }
                         else 
-                        if(action == 'confirmar')
+                        if(action == 'confirmar'){
                             _confirm_(req,turno);
+                            msg = 'Reserva confirmada'
+                        }
 
                         break;
                     case 'DELETE':
@@ -121,7 +129,7 @@ const reservasHandler = async (req,res,action,ID,method) => {
                 turnos.find(element => element.idReserva == ID ? element = turno : false);
                 fs.writeFileSync(path.join(__dirname + PATH_JSON), JSON.stringify(turnos));
                 res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-                res.write(JSON.stringify(turnos));
+                res.write(JSON.stringify({msg}));
                 res.end();
             } catch (error) {
                 responseError(res,"No se pudo realizar la operación")

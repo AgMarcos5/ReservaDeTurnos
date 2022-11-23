@@ -20,7 +20,7 @@ const sendMail = (options,mail) => {
         request.write(JSON.stringify(mail));
 
         request.on('error', () => {
-            reject("Error al conectar");
+            reject("Error al conectar con notificaciones");
         })
 
         request.end();

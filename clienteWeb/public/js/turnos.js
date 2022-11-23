@@ -4,11 +4,18 @@ import { getSucursales } from './sucursales.js';
 let turnos = getData("http://localhost:3000/api/reservas");
 
 
+const searchTurnos = async (queryParams = '') => {
+    if(queryParams){
+        turnos = getData("http://localhost:3000/api/reservas"+queryParams)
+        initTurnos();
+    }
+}
+
 const initTurnos = async () => {
     try {
         const auxturnos = await turnos;
         const sucursales = await getSucursales();
-       
+               
         listaTurnos.innerHTML = '';
         auxturnos.map( turno => {
             const sucursalName = sucursales.find( s => s.id == turno.branchId).name;  
@@ -37,6 +44,7 @@ const initTurnos = async () => {
             });
         });
     } catch (error) {
+        console.log(error)
         listaTurnos.innerHTML += `
         <div 
         >
@@ -51,4 +59,5 @@ const initTurnos = async () => {
 export {
     turnos,
     initTurnos,
+    searchTurnos,
 }

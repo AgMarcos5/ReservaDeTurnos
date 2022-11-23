@@ -1,6 +1,9 @@
 /apiGateway/node_modules
 /apiGateway/.env
 
+/apiGatewayExpress/node_modules
+/apiGatewayExpress/.env
+
 /servicios/gestionSucursales/node_modules
 /servicios/gestionSucursales/.env
 
@@ -8,6 +11,7 @@
 /servicios/gestionReservas/.env
 
 /servicios/gestionRecordatorios/node_modules
+/servicios/gestionRecordatorios/.env
 
 /servicios/gestionNotificaciones/node_modules
 /servicios/gestionNotificaciones/.env

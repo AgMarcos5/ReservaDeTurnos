@@ -8,10 +8,10 @@ const sucursalesDropdown = document.querySelector('.sucursalesContainer');
 
 const optionSucursal = document.getElementById('option-sucursal');
 
+
 optionSucursal.addEventListener('click', () => {
     toggle(sucursalesDropdown)
 })
-
 
 document.addEventListener('click', event => {
     const isClickInsideSucursales = sucursalesDropdown.contains(event.target) || optionSucursal.contains(event.target);
@@ -37,7 +37,7 @@ const initSucursales = () => {
 
         // Seleccionar sucursal
         const sucursalesHTML = document.querySelectorAll('.sucursalesContainer ul .sucursal');
-        const inputSucursal = document.getElementById('sucursal');
+        const inputSucursal = document.querySelector('.options #option-sucursal input');
 
         sucursalesHTML.forEach(sucursal => {
             sucursal.addEventListener('click', () => {
@@ -47,10 +47,12 @@ const initSucursales = () => {
                 if(sucursal === sucursalSeleccionada){
                     sucursalSeleccionada.classList.remove("selected");
                     inputSucursal.value= '';
+                    inputSucursal.id = '';
                 } else{
                     sucursalSeleccionada?.classList.remove("selected");
                     sucursal.classList.add("selected");
                     inputSucursal.value= data.name;
+                    inputSucursal.id = data.id;
                 }
                 hide(sucursalesDropdown);
             });
@@ -58,11 +60,14 @@ const initSucursales = () => {
     })
 }
 
-const initSucursales2 = async () => {
 
+
+const initSucursales2 = async () => {
     try {
+        const auxSucursales = await sucursales;
+
         listaSucursales.innerHTML = '';
-        sucursales.map( sucursal => {
+        auxSucursales.map( sucursal => {
 
             listaSucursales.innerHTML += `
             <div 
@@ -76,20 +81,22 @@ const initSucursales2 = async () => {
         
         // Seleccionar sucursal
         const sucursalesHTML = document.querySelectorAll('.sucursalesContainer ul .sucursal');
-        const inputSucursal = document.getElementById('sucursal');
+        const inputSucursal = document.querySelector('.options #option-sucursal input');
 
         sucursalesHTML.forEach(sucursal => {
             sucursal.addEventListener('click', () => {
-                const data = sucursales.find( s => s.id == sucursal.id);           
+                const data = auxSucursales.find( s => s.id == sucursal.id);           
                 
                 const sucursalSeleccionada = document.querySelector(".sucursalesContainer ul .sucursal.selected");
                 if(sucursal === sucursalSeleccionada){
                     sucursalSeleccionada.classList.remove("selected");
                     inputSucursal.value= '';
+                    inputSucursal.id = '';
                 } else{
                     sucursalSeleccionada?.classList.remove("selected");
                     sucursal.classList.add("selected");
                     inputSucursal.value= data.name;
+                    inputSucursal.id = data.id;
                 }
                 hide(sucursalesDropdown);
             });
