@@ -10,7 +10,7 @@ const { PATH_JSON, INTERVAL } = config;
 const requestOptions = {
     hostname: 'localhost',
     port: config.NOTIFICACIONES_PORT,
-    path: '/api/notificaciones',
+    path: '/api/notificacion',
     method: 'POST',
     headers: {
         "Content-Type": "application/json"
@@ -30,13 +30,20 @@ const notify = async (element) => {
         let body = {
             'destinatario': element['email'],
             'asunto': 'Recordatorio de reserva',
-            'cuerpo': `Hola, le recordamos que tiene una reserva el ${fecha} a las ${hora}hs, en la sucursal ${element['branchId']}.`,
+            'cuerpo': 
+            `<p>Hola, le recordamos que usted tiene una reserva a través de <b>Booking SSDD</b>.</p>
+            <ul>
+                <li>Día: <b>${fecha}</b></li>
+                <li>Hora: <b>${hora}hs.</b></li>
+                <li>Sucursal: <b>${element['branchId']}</b></li>
+            </ul>
+            <p><b>Booking SSDD</b>.</p>`
         };
         
         await POSTRequest(requestOptions, body);
 
     } catch (error) {
-        console.log(error)
+        console.log('No se pudo realizar la operación');
     }
 
 }
@@ -56,7 +63,7 @@ const notifyReservas = () => {
         });
         
     } catch (error) {
-        console.log("No se encuentra el archivo de reservas")
+        console.log("No se encuentra el archivo de reservas");
     }
 }
 

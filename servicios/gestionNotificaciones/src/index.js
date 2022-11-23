@@ -1,7 +1,7 @@
 const http = require('http')
 const { config } = require("./config")
 const { responseError } = require("./lib/error");
-const { sendMail } = require('./lib/getData')
+const { sendMail } = require('./lib/sendMail')
 
 const {NOTIFICACIONES_PORT} = config;
 
@@ -14,7 +14,7 @@ const server = http.createServer((req,res) => {
 
     switch(method) {
         case "POST":
-            if(url === `/api/notificaciones`) {
+            if(url === `/api/notificacion`) {
                 // Enviar un mail
                 sendMail(req,res);
             }
