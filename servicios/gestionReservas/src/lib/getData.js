@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { bodyParser } = require("./bodyParser");
 const { config } = require('../config');
 const { responseError } = require('./error');
 
@@ -14,70 +13,32 @@ const headers = {
 };
 
 
-const getReservasUsuario = (req,res,ID) => {
+const getReserva = (req,res,ID) => {
 
     try{
         let turnosJSON = fs.readFileSync(path.join(__dirname + PATH_JSON));
         const turnos = JSON.parse(turnosJSON);
         
-        const user_turnos = turnos.filter(chain => chain.userId === ID);
+        const turno = turnos.find(element => element.idReserva == ID);
 
-        if(user_turnos.length){
+        if(turno){
             res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-            res.write(JSON.stringify(user_turnos));
+            res.write(JSON.stringify(turno));
             res.end();
         }
         else{
-            responseError(res,"No existe usuario")
+            responseError(res,"No existe reserva")
         }
     } catch (error) {
         responseError(res,"No se encuentra el archivo de reservas")
     }
 }
 
-
-const reservasHandler = async (req,res,ID,method) => {
-    
-    try {
-        let turnosJSON = fs.readFileSync(path.join(__dirname + PATH_JSON));
-        const turnos = JSON.parse(turnosJSON);
-        
-        const turno = turnos.find(element => element.id === ID);
-
-        if(turno){
-            try {
-                switch(method) {
-                    case 'POST':
-                        await bodyParser(req)
-                        turno.userId = req.body.userId;
-                        turno.email = req.body.email;
-                        break;
-                    case 'DELETE':
-                        turno.userId = -1;
-                        turno.email = -1;
-                        break;
-                }
-                turnos.find(element => element.id === ID ? element = turno : false);
-                fs.writeFileSync(path.join(__dirname + PATH_JSON), JSON.stringify(turnos));
-                res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-                res.write(JSON.stringify(turnos));
-                res.end();
-            } catch (error) {
-                responseError(res,"No se pudo realizar la operación")
-            }
-        }
-        else
-            responseError(res,"No se encontraron turnos")
-
-    } catch (error) {
-        responseError(res,"No se encuentra el archivo de reservas")
-    }
-}
 
 
 const filterByQP = (array,param,value) => {
     if( value != ''){
-        if(param === 'datetime') {  // Caso datetime
+        if(param === 'dateTime') {  // Caso dateTime
             const valueDate = new Date(value).toISOString().split('T')[0];
             return array.filter( turno => {
                 const turnoDate = new Date(turno[param]).toISOString().split('T')[0];
@@ -85,11 +46,12 @@ const filterByQP = (array,param,value) => {
             })
         }
         else{ // Caso userId o branchId
-            return array.filter( turno => turno[param] === value)
+            return array.filter( turno => turno[param] == value);
         }
     }
     return array;
 } 
+
 
 const getTurnos = (req,res,queryParams) => {
     try{
@@ -119,7 +81,6 @@ const getTurnos = (req,res,queryParams) => {
 
 
 module.exports = {
-    getReservasUsuario,
-    reservasHandler,
+    getReserva,
     getTurnos,
 }
