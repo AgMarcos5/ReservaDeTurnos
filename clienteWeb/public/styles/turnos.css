@@ -50,15 +50,66 @@
 }
 
 .turnosContainer .turno{
-    border: 1px solid grey;
-    padding: 5px;
     border-radius: 5px;
+    background: #e8ebfb;
+    box-shadow: 0px 2px 0px 0px #aeb5cf;
+   
+    padding: 20px;
+    margin-right: 10px;
+    transition: .2s;
+}
+
+.turnosContainer .turno:hover{
+    background: #dbdeeb;
+    box-shadow: 0px 2px 0px 0px #8a8cad99;
 }
 
 .turnosContainer .turno.ocupado{
-    opacity: .5;
+    opacity: .4;
 }
 
 .turnosContainer .turno.selected{
-    background: grey;
+    background: #d2dbff;
+    box-shadow: 0px 2px 0px 0px #3554d1;
 }
+
+/* Formulario */
+
+form input{
+    font-family: 'DM Sans', sans-serif;
+    background: #FFFFFF;
+    border: 1px solid #DEDEDE;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+    color: #151616;
+    padding: 10px 16px;
+    width: 100%;
+    transition: .3s;
+}
+
+form input:focus{
+    
+    border: 1px solid #2c46b1;
+    outline: 0;
+}
+
+form .btn{
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: unset;
+}
+
+#reservaForm{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+

@@ -1,23 +1,27 @@
 import {getData} from './getData.js'
+import { getSucursales } from './sucursales.js';
 
-let turnos = [];
+let turnos = getData("http://localhost:3000/api/reservas");
 
 
 const initTurnos = async () => {
     try {
-        turnos = await getData("http://localhost:3000/api/reservas")
+        const auxturnos = await turnos;
+        const sucursales = await getSucursales();
        
         listaTurnos.innerHTML = '';
-        turnos.map( turno => {
-
-            const ocupado = turno.userId != null ? 'ocupado' : '';
+        auxturnos.map( turno => {
+            const sucursalName = sucursales.find( s => s.id == turno.branchId).name;  
+            const date = new Date(turno.dateTime);
+            const ocupado = turno.status != 0 ? 'ocupado' : '';
 
             listaTurnos.innerHTML += `
             <div 
                 class="turno ${ocupado}" 
-                id="${turno.id}"
+                id="${turno.idReserva}"
             >
-                <div>${turno.datetime}</div>
+                <div>${sucursalName}</div>
+                <div>${date.toLocaleDateString()} - ${date.getHours()}:${date.getMinutes()}hs </div>
             </div>
             `
         })
@@ -26,8 +30,10 @@ const initTurnos = async () => {
         const turnosHTML = document.querySelectorAll('.turnosContainer .turno');
         turnosHTML.forEach(turno => {
             turno.addEventListener('click', () => {
-            document.querySelector(".turnosContainer .turno.selected")?.classList.remove("selected");
-            turno.classList.add("selected");
+                if( !turno.classList.contains('ocupado')){
+                    document.querySelector(".turnosContainer .turno.selected")?.classList.remove("selected");
+                    turno.classList.add("selected");
+                }
             });
         });
     } catch (error) {
@@ -38,9 +44,9 @@ const initTurnos = async () => {
         </div>
         `
     }
-    
-   
 };
+
+
 
 export {
     turnos,

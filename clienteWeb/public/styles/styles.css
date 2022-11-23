@@ -13,7 +13,6 @@
 }
 
 body{
-    
     font-family: 'DM Sans', sans-serif;
     color: var(--black);
 }
@@ -155,8 +154,19 @@ nav ul {
     padding: 15px 35px;
 }
 
+.btn{
+    font-family: 'DM Sans', sans-serif;
+    background: #3554d1;
+    color: #fff;
+    border-radius: 70px;
+    border: 0;
+    cursor: pointer;
+    transition: all .2s;
+    padding: 15px 35px;
+}
 
-.searchWrapper .btn:hover{
+
+.btn:hover{
     background: #2c46b1;
 }
 
@@ -206,6 +216,12 @@ section{
 .reservas{
     padding: 10px;
     box-sizing: border-box;
+}
+
+.col h2{
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 5px;
 }
 
 .col{

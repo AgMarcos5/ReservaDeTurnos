@@ -1,6 +1,25 @@
 import { navigate } from "../routes/routes.js"
+import {config} from '../config.js'
 
 let authStatus = 'not-authenticated' // checking // authenticated 
+
+const getUserId = () => {
+    if(authStatus === 'authenticated')
+    {
+        return 1
+    } else{
+        return 0;
+    }
+}
+
+const getPort = () => {
+    if(authStatus === 'authenticated')
+    {
+        return config.APIGATEWAY_AUTH_PORT
+    } else{
+        return config.APIGATEWAY_PORT;
+    }
+}
 
 const checkAuth = () => {
     switch (authStatus) {
@@ -15,13 +34,6 @@ const checkAuth = () => {
         default:
             navigate("/");
             break;
-    }
-
-    if(authStatus === 'not-authenticated'){
-        navigate("/invitado")
-    }
-    else{
-        navigate("/inicio")
     }
 }
 
@@ -50,3 +62,8 @@ checkAuth();
 
 
 window.logout = logout;
+
+export  {
+    getUserId,
+    getPort
+}
