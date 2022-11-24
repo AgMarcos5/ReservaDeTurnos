@@ -1,26 +1,26 @@
 [
     {
         "id": "1", 
-        "lat": "-38.012061",
-        "lng": "22.5835651", 
-        "name": "Sucursal del Norte"
+        "lat": "35.162061",
+        "lng": "-79.6235651", 
+        "name": "Sucursal Estados Unidos"
     },
     {
         "id": "2", 
         "lat": "-38.012061",
         "lng": "-57.5835651", 
-        "name": "Sucursal del sur"
+        "name": "Sucursal Argentina"
     },
     {
         "id": "3", 
-        "lat": "-38.012061",
-        "lng": "17.5835651", 
-        "name": "Sucursal del oeste"
+        "lat": "39.092061",
+        "lng": "-4.1735651", 
+        "name": "Sucursal España"
     },
     {
         "id": "4", 
-        "lat": "49.012061",
-        "lng": "-50.5835651", 
-        "name": "Sucursal del este"
+        "lat": "35.302061",
+        "lng": "98.6135651", 
+        "name": "Sucursal China"
     }
 ]
