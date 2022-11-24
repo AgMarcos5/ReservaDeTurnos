@@ -12,10 +12,21 @@
     padding: 0;
 }
 
+html {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
 body{
     font-family: 'DM Sans', sans-serif;
     color: var(--black);
 }
+
+.hidden {
+    display: none;
+}
+
+
 
 /* HEADER */
 header{
@@ -64,7 +75,7 @@ nav ul {
     margin: 0;
   }
   
-  nav li a {
+  nav li a, nav li .authBtn {
     display: block;
     color: white;
     font-weight: 500;
@@ -74,17 +85,60 @@ nav ul {
     padding: 14px 16px;
     text-decoration: none;
     border-radius: 4px;
+    cursor: pointer;
     transition: .2s;
   }
   
-  nav li.right a {
+  nav li.right a, nav li.right .authBtn {
     border: 1px solid;
 }
   
-  nav li a:hover {
+  nav li a:hover, nav li .authBtn:hover {
      color: #181818bb; 
      background-color: white;
   }
+
+  nav .hide{
+    display: none;
+  }
+
+#username{
+    width: 120px;
+    box-sizing: border-box;
+}
+  
+.username-menu {
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    width: 120px;
+    color: #181818bb; 
+    background-color: white;
+    position: absolute;
+    margin-top: 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 1px 2px rgb(0 0 0 / 8%), 0px 4px 12px rgb(0 0 0 / 5%);
+
+    opacity: 0;
+    transition: .2s;
+    transform: translateY(0);
+    pointer-events: none;
+}
+
+.username-menu:hover{
+    color: white;
+    border: 1px solid white;
+    background: transparent;
+}
+
+.username-menu.is-visible{
+    opacity: 1;
+    transform: translateY(10px);
+    pointer-events: all;
+}
 
 
 .headerContent h1{
@@ -211,15 +265,17 @@ section{
     padding: 10px;
     border-radius: 2px;
     box-shadow: 0 0 20px 0px #00000033;
+    min-height: 600px;
 }
 
 .reservas{
     padding: 10px;
     box-sizing: border-box;
     padding-bottom: 50px;
+    width: 100%;
 }
 
-.col h2{
+.reservas h2{
     margin-bottom: 15px;
     border-bottom: 1px solid #e1e1e1;
     padding-bottom: 5px;

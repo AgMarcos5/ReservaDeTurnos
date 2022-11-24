@@ -103,11 +103,13 @@ const reservasHandler = async (req,res,action,ID,method) => {
         const turnos = JSON.parse(turnosJSON);
         
         const turno = turnos.find(element => element.idReserva == ID);
+        console.log("TURNO",turno)
         let msg = ''
 
         if(turno){
             try {
                 await bodyParser(req);
+                //console.log("body",req.body)
                 switch(method) {
                     case 'POST':
                         

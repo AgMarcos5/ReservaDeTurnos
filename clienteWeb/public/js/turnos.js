@@ -1,20 +1,22 @@
 import {getData} from './getData.js'
 import { getSucursales } from './sucursales.js';
 
-let turnos = getData("http://localhost:3000/api/reservas");
+let turnos = [];
 
-
-const searchTurnos = async (queryParams = '') => {
+const searchTurnos = async (PORT, queryParams = '') => {
     if(queryParams){
-        turnos = getData("http://localhost:3000/api/reservas"+queryParams)
+        turnos = getData(`http://localhost:${PORT}/api/reservas`+queryParams)
         initTurnos();
     }
 }
 
-const initTurnos = async () => {
+const initTurnos = async (PORT) => {
     try {
+        if(PORT)
+            turnos = getData(`http://localhost:${PORT}/api/reservas`);
+
         const auxturnos = await turnos;
-        const sucursales = await getSucursales();
+        const sucursales = await getSucursales(PORT);
                
         listaTurnos.innerHTML = '';
         auxturnos.map( turno => {

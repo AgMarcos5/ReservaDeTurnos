@@ -1,19 +1,19 @@
 // Show an element
-export const show = function (elem) {
+ const show = function (elem) {
 	elem.classList.add('is-visible');
 };
 
 // Hide an element
-export const hide = function (elem) {
+ const hide = function (elem) {
 	elem.classList.remove('is-visible');
 };
 
 // Toggle element visibility
-export const toggle = function (elem) {
+ const toggle = function (elem) {
 	elem.classList.toggle('is-visible');
 };
 
-export const buildQuery = function(userQuery) {
+ const buildQuery = function(userQuery) {
     //store query parameters in a temporary variable
     var query = [];
     //loop through user query object
@@ -25,3 +25,14 @@ export const buildQuery = function(userQuery) {
     let new_url = "" + (query.length ? '?' + query.join('&') : '');
     return(new_url);
 }
+
+const hashCode = (str) => {
+    let hash = 0, chr;
+    if (str.length === 0) return hash;
+    for (let i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash < 0 ? hash*-1 : hash;
+  }

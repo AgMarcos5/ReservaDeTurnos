@@ -1,0 +1,94 @@
+<header>
+    <div class="headerContent">
+        <nav>
+            <ul>
+                <li><a href="/" onclick="route()">Inicio</a></li>
+                <li class="auth hide"><a href="/reservas" onclick="route()">Mis reservas</a></li>
+
+                <li class="right not-auth hide"><span class="authBtn" onclick="login()">Entrar / Registrar</span></li>
+                <li class="right auth hide">
+                    <span class="authBtn" id="username">Nombre</span>
+                    <div class="username-menu">
+                        <span onclick="logout()">Desconectar</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+
+        <h1> SD Turnos </h1>
+        <div class="optionsContainer">
+            <div class="options">
+
+                <div class="opt" id="option-sucursal">
+                    <span class="icon icon-sucursal"></span>
+                    <div class="form-dropdown">
+                        <label>Sucursal</label>
+                        <input type="text" autocomplete="off" name="sucursal" value=""
+                            placeholder="Selecciona una sucursal" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="opt" id="option-date">
+                    <span class="icon icon-sucursal"></span>
+                    <div class="form-dropdown">
+                        <label>Fecha</label>
+                        <input type=date min=2014-09-08>
+       <!--
+
+           <input type="text" autocomplete="off" id="fecha" name="fecha" value=""
+           placeholder="Selecciona una fecha" readonly="readonly">
+       -->
+                    </div>
+                </div>
+
+                <div class="searchWrapper">
+                    <button class="btn">
+                        <span class="searchIcon"></span>
+                        Buscar
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="sucursalesContainer dropdown-menu ">
+                <ul id="listaSucursales">
+                    <!-- <li class="selected">Sucursal 1</li> -->
+                </ul>
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <div class="headerBGFilter"></div>
+    <div class="headerBG">
+    </div>
+</header>
+
+
+<!-- RESERVAS DEL USUARIO -->
+<section>
+    <div class="reservas col">
+        <h2>Mis reservas</h2>
+
+        <div id="listaReservas" class="turnosContainer">
+
+            <div class="reserva">
+                <div>Nombre sucursal</div>
+                <div>27/10/2022 - 18:00 hs</div>
+            </div>
+            
+            <div class="reserva">
+                <div>Nombre sucursal</div>
+                <div>27/10/2022 - 20:00 hs</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+

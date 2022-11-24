@@ -1,7 +1,6 @@
 import {getData} from './getData.js'
-import { hide, show, toggle } from './utils.js';
 
-let sucursales = getData("http://localhost:3000/api/sucursales");
+let sucursales = [];
 
 // show hide dropdown
 const sucursalesDropdown = document.querySelector('.sucursalesContainer');
@@ -21,95 +20,60 @@ document.addEventListener('click', event => {
     }
 })
 
-const initSucursales = () => {
-    sucursales.then( s => {
-        listaSucursales.innerHTML = "";
-        s.map((sucursal) => {
-          listaSucursales.innerHTML += `
-                <div 
-                    class="sucursal" 
-                    id="${sucursal.id}"
-                >
-                    ${sucursal.name}
-                </div>
-                `;
-        });
+const initSucursales = async (PORT) => {
+  try {
+    if (PORT) sucursales = getData(`http://localhost:${PORT}/api/sucursales`);
+    const auxSucursales = await sucursales;
 
-        // Seleccionar sucursal
-        const sucursalesHTML = document.querySelectorAll('.sucursalesContainer ul .sucursal');
-        const inputSucursal = document.querySelector('.options #option-sucursal input');
+    listaSucursales.innerHTML = "";
+    auxSucursales.map((sucursal) => {
+      listaSucursales.innerHTML += `
+                    <div 
+                        class="sucursal" 
+                        id="${sucursal.id}"
+                    >
+                        ${sucursal.name}
+                    </div>
+                    `;
+    });
 
-        sucursalesHTML.forEach(sucursal => {
-            sucursal.addEventListener('click', () => {
-                const data = s.find( s => s.id == sucursal.id);           
-                
-                const sucursalSeleccionada = document.querySelector(".sucursalesContainer ul .sucursal.selected");
-                if(sucursal === sucursalSeleccionada){
-                    sucursalSeleccionada.classList.remove("selected");
-                    inputSucursal.value= '';
-                    inputSucursal.id = '';
-                } else{
-                    sucursalSeleccionada?.classList.remove("selected");
-                    sucursal.classList.add("selected");
-                    inputSucursal.value= data.name;
-                    inputSucursal.id = data.id;
-                }
-                hide(sucursalesDropdown);
-            });
-        });
-    })
-}
+    // Seleccionar sucursal
+    const sucursalesHTML = document.querySelectorAll(
+      ".sucursalesContainer ul .sucursal"
+    );
+    const inputSucursal = document.querySelector(
+      ".options #option-sucursal input"
+    );
 
+    sucursalesHTML.forEach((sucursal) => {
+      sucursal.addEventListener("click", () => {
+        const data = auxSucursales.find((s) => s.id == sucursal.id);
 
-
-const initSucursales2 = async () => {
-    try {
-        const auxSucursales = await sucursales;
-
-        listaSucursales.innerHTML = '';
-        auxSucursales.map( sucursal => {
-
-            listaSucursales.innerHTML += `
-            <div 
-                class="sucursal" 
-                id="${sucursal.id}"
-            >
-                ${sucursal.name}
-            </div>
-            `
-        })
-        
-        // Seleccionar sucursal
-        const sucursalesHTML = document.querySelectorAll('.sucursalesContainer ul .sucursal');
-        const inputSucursal = document.querySelector('.options #option-sucursal input');
-
-        sucursalesHTML.forEach(sucursal => {
-            sucursal.addEventListener('click', () => {
-                const data = auxSucursales.find( s => s.id == sucursal.id);           
-                
-                const sucursalSeleccionada = document.querySelector(".sucursalesContainer ul .sucursal.selected");
-                if(sucursal === sucursalSeleccionada){
-                    sucursalSeleccionada.classList.remove("selected");
-                    inputSucursal.value= '';
-                    inputSucursal.id = '';
-                } else{
-                    sucursalSeleccionada?.classList.remove("selected");
-                    sucursal.classList.add("selected");
-                    inputSucursal.value= data.name;
-                    inputSucursal.id = data.id;
-                }
-                hide(sucursalesDropdown);
-            });
-        });
-    } catch (error) {
-        listaSucursales.innerHTML += `
+        const sucursalSeleccionada = document.querySelector(
+          ".sucursalesContainer ul .sucursal.selected"
+        );
+        if (sucursal === sucursalSeleccionada) {
+          sucursalSeleccionada.classList.remove("selected");
+          inputSucursal.value = "";
+          inputSucursal.id = "";
+        } else {
+          sucursalSeleccionada?.classList.remove("selected");
+          sucursal.classList.add("selected");
+          inputSucursal.value = data.name;
+          inputSucursal.id = data.id;
+        }
+        hide(sucursalesDropdown);
+      });
+    });
+  } catch (error) {
+    listaSucursales.innerHTML += `
         <div 
             class="sucursal" 
         >
             No se encontraron sucursales
         </div>
-        `
-    }
+        `;
+  }
 };
 
 const getSucursales = () => sucursales;

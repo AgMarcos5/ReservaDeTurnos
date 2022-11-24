@@ -4,7 +4,15 @@
         <nav>
             <ul>
                 <li><a href="/" onclick="route()">Inicio</a></li>
-                <li class="right"><a href="/login" onclick="route()">Entrar / Registrar</a></li>
+                <li class="auth hide"><a href="/reservas" onclick="route()">Mis reservas</a></li>
+
+                <li class="right not-auth hide"><span class="authBtn" onclick="login()">Entrar / Registrar</span></li>
+                <li class="right auth hide">
+                    <span class="authBtn" id="username">Nombre</span>
+                    <div class="username-menu">
+                        <span onclick="logout()">Desconectar</span>
+                    </div>
+                </li>
             </ul>
         </nav>
 

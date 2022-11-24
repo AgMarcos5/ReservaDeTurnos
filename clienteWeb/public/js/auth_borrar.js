@@ -1,17 +1,16 @@
-let auth0Client = null;
-let config = null
+//import { navigate } from "../routes/routes.js"
+//import {config} from '../config.js'
 
-const fetchConfig = () => fetch("../config.json");
+let authStatus = 'not-authenticated' // checking // authenticated 
+
+////////////////////////////////////
+
+let auth0Client = null;
 
 const configureClient = async () => {
-    const response = await fetchConfig();
-    config = await response.json();
-
     auth0Client = await auth0.createAuth0Client({
-      domain: config.domain,
-      clientId: config.clientId,
-      //domain: "dev-rhxof712tnobs0d1.us.auth0.com",
-      //clientId: "ouMwjo792KemjsXFubFCeLf86b9jpQXc",
+      domain: "dev-rhxof712tnobs0d1.us.auth0.com",
+      clientId: "ouMwjo792KemjsXFubFCeLf86b9jpQXc",
       authorizationParams: {
         redirect_uri: window.location.origin,
       },
@@ -19,7 +18,9 @@ const configureClient = async () => {
 };
 
 const login = async (targetUrl) => {
-    try {  
+    try {
+      console.log("Logging in", targetUrl);
+  
       const options = {
         authorizationParams: {
           redirect_uri: window.location.origin
@@ -32,19 +33,20 @@ const login = async (targetUrl) => {
   
       await auth0Client.loginWithRedirect(options);
     } catch (err) {
-      console.log("Login error", err);
+      console.log("Log in failed", err);
     }
 };
 
 const logout = async () => {
     try {
+      console.log("Logging out");
       await auth0Client.logout({
         logoutParams: {
           returnTo: window.location.origin
         }
       });
     } catch (err) {
-      console.log("Logout error", err);
+      console.log("Log out failed", err);
     }
 };
 
@@ -68,12 +70,15 @@ window.onload = async () => {
 
     await configureClient();
 
+    // If unable to parse the history hash, default to the root URL
     if (!showContentFromUrl(window.location.pathname)) {
       showContentFromUrl("/");
       window.history.replaceState({ url: "/" }, {}, "/");
     }
 
     const bodyElement = document.getElementsByTagName("body")[0];
+
+    // Listen out for clicks on any hyperlink that navigates to a #/ URL
     bodyElement.addEventListener("click", (e) => {
       if (isRouteLink(e.target)) {
         const url = e.target.getAttribute("href");
@@ -84,39 +89,77 @@ window.onload = async () => {
         }
       }
     });
+    //
     
     const isAuthenticated = await auth0Client.isAuthenticated();
-    getConfig();
-    if (isAuthenticated) {
-      console.log("> Usuario autenticado");
-      //sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
 
+    if (isAuthenticated) {
+      console.log("> User is authenticated");
       window.history.replaceState({}, document.title, window.location.pathname);
       updateUI();
       return;
     }
 
-    console.log("> Usuario no autenticado");
-    //sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
+    console.log("> User not authenticated");
 
     const query = window.location.search;
     const shouldParseResult = query.includes("code=") && query.includes("state=");
 
     if (shouldParseResult) {
+        console.log("> Parsing redirect");
         try {
           const result = await auth0Client.handleRedirectCallback();
           if (result.appState && result.appState.targetUrl) {
             showContentFromUrl(result.appState.targetUrl);
           }
+          console.log("Logged in!");
         } catch (err) {
           console.log("Error parsing redirect:", err);
         }
+    
         window.history.replaceState({}, document.title, "/");
     }
 
     updateUI();
 
 }
+
+/*
+const updateUI = async () => {
+    try {
+      const isAuthenticated = await auth0Client.isAuthenticated();
+  
+      if (isAuthenticated) {
+        const user = await auth0Client.getUser();
+        console.log(user)
+
+        const username = document.getElementById('username');
+        username.innerText = user.given_name;
+
+        // Oculta elementos para los usuarios no autenticados
+        const authList = document.querySelectorAll('.auth');
+        for (var item of authList) {
+          item.classList.remove("hide");
+        }
+
+
+      } else {
+
+        // Oculta elementos para los usuarios autenticados
+        const authList = document.querySelectorAll('.not-auth');
+        for (var item of authList) {
+          item.classList.remove("hide");
+        }
+
+      }
+    } catch (err) {
+      console.log("Error updating UI!", err);
+      return;
+    }
+    console.log("UI updated");
+  };
+*/
+////////////////////////////////////
 
 
 async function testEndpoint() {
@@ -139,30 +182,55 @@ async function testEndpoint() {
   }
 }
 
-const getConfig = async () => {
-  const isAuthenticated = await auth0Client.isAuthenticated();
-  if(isAuthenticated){
-    const user = await auth0Client.getUser();
-    const userId = hashCode(user.email)
-    sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
-    sessionStorage.setItem('USERID', userId);
-    return {
-      PORT: config.APIGATEWAY_AUTH_PORT,
-      USERID: userId
+
+const getUserId = () => {
+    if(authStatus === 'authenticated')
+    {
+        return 1
+    } else{
+        return 0;
     }
-  } else{
-    sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
-    sessionStorage.setItem('USERID', 0);
-    return {
-      PORT: config.APIGATEWAY_PORT,
-      USERID: 0
-    } 
-  }
 }
 
+const getPort = () => {
+    if(authStatus === 'authenticated')
+    {
+        return config.APIGATEWAY_AUTH_PORT
+    } else{
+        return config.APIGATEWAY_PORT;
+    }
+}
 
+/*
+const checkAuth = async () => {
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    const userProfile = await auth0Client.getUser();
+
+    switch (authStatus) {
+        case 'not-authenticated':
+            navigate("/invitado");
+            break;
+    
+        case 'authenticated':
+            navigate("/inicio");
+            break;
+        
+        default:
+            navigate("/");
+            break;
+    }
+}
+*/
 
 
 // EVENTOS
+
 window.login = login;
 window.logout = logout;
+
+/*
+export  {
+    getUserId,
+    getPort
+}
+*/
