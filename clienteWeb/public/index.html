@@ -20,11 +20,11 @@
                             <li><a href="/" class="route-link" >Inicio</a></li>
                             <li class="auth hide"><a href="/reservas" class="route-link" >Mis reservas</a></li>
             
-                            <li class="right not-auth hide"><span class="authBtn" onclick="login()">Entrar / Registrar</span></li>
+                            <li class="right not-auth hide"><span class="authBtn" id="loginButton" >Entrar / Registrar</span></li>
                             <li class="right auth hide">
                                 <span class="authBtn" id="username">Nombre</span>
                                 <div class="username-menu">
-                                    <span onclick="logout()">Desconectar</span>
+                                    <span id="logoutButton" >Desconectar</span>
                                 </div>
                             </li>
                         </ul>
@@ -110,7 +110,7 @@
                     
                         <iframe src="https://app.cartes.io/maps/a7454b8d-a1f7-4732-8c35-7865f872e111/embed?type=map" width="100%"
                         height="600" frameborder="0"></iframe>
-                    
+        
                 </div>
             
             

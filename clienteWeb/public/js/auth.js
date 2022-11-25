@@ -10,8 +10,6 @@ const configureClient = async () => {
     auth0Client = await auth0.createAuth0Client({
       domain: config.domain,
       clientId: config.clientId,
-      //domain: "dev-rhxof712tnobs0d1.us.auth0.com",
-      //clientId: "ouMwjo792KemjsXFubFCeLf86b9jpQXc",
       authorizationParams: {
         redirect_uri: window.location.origin,
       },
@@ -31,6 +29,7 @@ const login = async (targetUrl) => {
       }
   
       await auth0Client.loginWithRedirect(options);
+      sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
     } catch (err) {
       console.log("Login error", err);
     }
@@ -38,6 +37,7 @@ const login = async (targetUrl) => {
 
 const logout = async () => {
     try {
+      sessionStorage.clear();
       await auth0Client.logout({
         logoutParams: {
           returnTo: window.location.origin
@@ -87,9 +87,9 @@ window.onload = async () => {
     
     const isAuthenticated = await auth0Client.isAuthenticated();
     getConfig();
+
     if (isAuthenticated) {
       console.log("> Usuario autenticado");
-      //sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
 
       window.history.replaceState({}, document.title, window.location.pathname);
       updateUI();
@@ -97,7 +97,6 @@ window.onload = async () => {
     }
 
     console.log("> Usuario no autenticado");
-    //sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
 
     const query = window.location.search;
     const shouldParseResult = query.includes("code=") && query.includes("state=");
@@ -114,6 +113,7 @@ window.onload = async () => {
         window.history.replaceState({}, document.title, "/");
     }
 
+    console.log("hola?")
     updateUI();
 
 }
@@ -148,14 +148,16 @@ const getConfig = async () => {
     sessionStorage.setItem('USERID', userId);
     return {
       PORT: config.APIGATEWAY_AUTH_PORT,
-      USERID: userId
+      USERID: userId,
+      EMAIL: user.email
     }
   } else{
     sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
     sessionStorage.setItem('USERID', 0);
     return {
       PORT: config.APIGATEWAY_PORT,
-      USERID: 0
+      USERID: 0,
+      EMAIL: null
     } 
   }
 }
