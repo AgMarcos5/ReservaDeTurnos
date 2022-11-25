@@ -6,7 +6,7 @@ const { getData } = require('../lib/getData');
 
 const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE',
     'Access-Control-Request-Method': '*',
     'Access-Control-Request-Headers': '*',
     'Access-Control-Max-Age': 2592000, // 30 days

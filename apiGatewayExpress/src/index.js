@@ -4,15 +4,28 @@ const { config } = require('./config');
 const { getData } = require('./lib/getData');
 const { responseError } = require('./lib/error')
 const { bodyParser } = require('./lib/bodyParser');
+const cors = require("cors");
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+const checkJwt = auth({
+  audience: 'tQeghMOCcruiyvJN5YyNqysMtBftWvkt',
+  issuerBaseURL: `https://dev-rhxof712tnobs0d1.us.auth0.com`,
+});
+app.use(checkJwt);  
 
 const { PORT,SUCURSALES_PORT,RESERVAS_PORT } = config;
 
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+  'Access-Control-Allow-Methods': 'OPTIONS, POST, GET, DELETE',
   'Access-Control-Request-Method': '*',
   'Access-Control-Request-Headers': '*',
   'Access-Control-Max-Age': 2592000, // 30 days
@@ -27,21 +40,6 @@ const optionsSucursales = {
   hostname: 'localhost',
   port: SUCURSALES_PORT,
 }
-
-
-const cors = require("cors");
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
-
-const checkJwt = auth({
-  audience: 'sdturnos',
-  issuerBaseURL: `https://dev-rhxof712tnobs0d1.us.auth0.com/`,
-});
-app.use(checkJwt);  
 
 
 // ALTA RESERVA

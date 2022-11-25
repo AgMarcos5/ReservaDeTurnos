@@ -2,12 +2,33 @@ import { initReservas } from "./reservas.js";
 import { initSucursales } from "./sucursales.js";
 import { initTurnos, searchTurnos, turnos } from "./turnos.js";
 
+let header = {
+    'Accept': 'application/json',
+};
+
 const init = async () => {
     const port = sessionStorage.getItem("PORT") || 3000;        
     const userId = sessionStorage.getItem("USERID") || 0;      
-    await initSucursales(port);
-    await initTurnos(port);
-    await initReservas(port,userId);
+    const token = sessionStorage.getItem("TOKEN") || null;
+
+    if(token){
+        header['Authorization'] = 'Bearer ' + token;
+    }
+
+    console.log(header)
+
+    // BORRAR
+    /*
+    fetch('http://localhost:4000/api/reservas/2', {
+        headers: header
+    })
+    .then(response => response.json())
+    .then(data => console.log("RESPUESTA: ",data));
+    */
+
+    await initSucursales(port, header);
+    await initTurnos(port, header);
+    await initReservas(port,userId, header);
 }
 
 init()
@@ -58,7 +79,7 @@ searchButton.addEventListener('click', () => {
         dateTime: inputDate
     }
     
-    searchTurnos(3000,buildQuery(queryParams))
+    searchTurnos(3000,buildQuery(queryParams),header)
 })
 
 
@@ -85,13 +106,13 @@ const solicitarTurno = async() => {
                 const config = await getConfig();
                 const PORT =  config.PORT;
                 const USERID = config.USERID;
-                //const EMAIL = config.EMAIL;
-
 
                 const rawResponse = await fetch(`http://localhost:${PORT}/api/reservas/solicitar/${idReserva}`, {
                     method: 'POST',
+                    ...header,
                     body: JSON.stringify({userId: USERID})
                 });
+
                 console.log("respuesta: ", rawResponse)
                 const content = await rawResponse.json();
 

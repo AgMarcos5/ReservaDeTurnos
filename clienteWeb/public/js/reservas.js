@@ -3,10 +3,10 @@ import { getSucursales } from './sucursales.js';
 
 let reservas = [];
 
-const initReservas = async (PORT, USERID) => {
+const initReservas = async (PORT, USERID, header) => {
     try {
         if(PORT)
-            reservas = getData(`http://localhost:${PORT}/api/reservas?userId=${USERID}`);
+            reservas = getData(`http://localhost:${PORT}/api/reservas?userId=${USERID}`,header);
 
         const auxReservas = await reservas;
         const sucursales = await getSucursales(PORT);
@@ -69,11 +69,14 @@ const initReservas = async (PORT, USERID) => {
 
                 const rawResponse = await fetch(`http://localhost:${PORT}/api/reservas/${idReserva}`, {
                     method: 'DELETE',
-                    headers: {'Accept': 'application/json'},
+                    headers: header,
                     body: JSON.stringify({userId: USERID})
                 });
                 console.log("respuesta: ", rawResponse)
                 const content = await rawResponse.json();
+
+                
+
             });
         });
 

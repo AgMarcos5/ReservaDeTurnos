@@ -8,6 +8,8 @@ const configureClient = async () => {
     config = await response.json();
 
     auth0Client = await auth0.createAuth0Client({
+      //responseType: "token id_token",
+      //audience: "tQeghMOCcruiyvJN5YyNqysMtBftWvkt",
       domain: config.domain,
       clientId: config.clientId,
       authorizationParams: {
@@ -143,14 +145,23 @@ const getConfig = async () => {
   const isAuthenticated = await auth0Client.isAuthenticated();
   if(isAuthenticated){
     const user = await auth0Client.getUser();
+    const token = await auth0Client.getIdTokenClaims()
+    const tokenraw = await token.__raw;
     const userId = hashCode(user.email)
+
     sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
+    sessionStorage.setItem('TOKEN', tokenraw);
     sessionStorage.setItem('USERID', userId);
+
+    console.log("TOKEN",token)
+
     return {
       PORT: config.APIGATEWAY_AUTH_PORT,
       USERID: userId,
-      EMAIL: user.email
+      EMAIL: user.email,
+      TOKEN: tokenraw
     }
+
   } else{
     sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
     sessionStorage.setItem('USERID', 0);

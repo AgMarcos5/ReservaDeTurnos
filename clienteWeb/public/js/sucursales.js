@@ -20,9 +20,9 @@ document.addEventListener('click', event => {
     }
 })
 
-const initSucursales = async (PORT) => {
+const initSucursales = async (PORT,header) => {
   try {
-    if (PORT) sucursales = getData(`http://localhost:${PORT}/api/sucursales`);
+    if (PORT) sucursales = getData(`http://localhost:${PORT}/api/sucursales`,header);
     const auxSucursales = await sucursales;
 
     listaSucursales.innerHTML = "";
