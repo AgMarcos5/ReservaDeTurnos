@@ -73,6 +73,25 @@
     box-shadow: 0px 2px 0px 0px #3554d1;
 }
 
+.turno .deleteIcon {
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    opacity: .3;
+    border: 1px solid;
+    border-radius: 60px;
+    padding: 5px;
+}
+
+.turno .deleteIcon img{
+    width: 100%;
+}
+
+#listaReservas .turno{
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Formulario */
 
 form input{

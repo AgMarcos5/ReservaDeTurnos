@@ -1,19 +1,33 @@
-//import { getPort, getUserId } from "./auth.js";
 import { initReservas } from "./reservas.js";
 import { initSucursales } from "./sucursales.js";
 import { initTurnos, searchTurnos, turnos } from "./turnos.js";
-//import { buildQuery, hide, toggle } from "./utils.js";
 
 const init = async () => {
     const port = sessionStorage.getItem("PORT") || 3000;        
     const userId = sessionStorage.getItem("USERID") || 0;      
-
     await initSucursales(port);
     await initTurnos(port);
     await initReservas(port,userId);
 }
 
 init()
+
+
+// LOGIN Y LOGOUT
+
+loginButton.addEventListener('click', ()=> {
+    console.log("login")
+    login()
+    init()
+})
+
+logoutButton.addEventListener('click', ()=> {
+    console.log("logout")
+    logout()
+    init()
+})
+
+////////////////////
 
 // LOGOUT BUTTON
 const usernameDropdown = document.querySelector('.username-menu');
@@ -53,7 +67,6 @@ reservaForm.addEventListener('submit', (e) => {
     e.preventDefault();    
     solicitarTurno();
     initTurnos();
-
 })
 
 const solicitarTurno = async() => {    
@@ -72,13 +85,14 @@ const solicitarTurno = async() => {
                 const config = await getConfig();
                 const PORT =  config.PORT;
                 const USERID = config.USERID;
+                //const EMAIL = config.EMAIL;
 
-                console.log("ID:",USERID)
 
                 const rawResponse = await fetch(`http://localhost:${PORT}/api/reservas/solicitar/${idReserva}`, {
                     method: 'POST',
                     body: JSON.stringify({userId: USERID})
                 });
+                console.log("respuesta: ", rawResponse)
                 const content = await rawResponse.json();
 
                 if(rawResponse.status === 200){
@@ -124,14 +138,26 @@ const reservarTurno = async (port,idReserva,userId,email) => {
         method: 'POST',
         body: JSON.stringify({userId,email})
     });
+
+    console.log(rawResponse.status)
     const content = await rawResponse.json();
 
+    if(rawResponse.status === 200){
+        Swal.fire({
+            title: 'Reserva confirmada',
+            icon: 'success',
+            confirmButtonText: 'cerrar'
+        })
+    } else if(rawResponse.status === 400){
+        Swal.fire({
+            title: 'Error al confirmar',
+            text: content.msg,
+            icon: 'error',
+            confirmButtonText: 'cerrar'
+        })
+    }
     console.log("Reserva",content)
 
-    Swal.fire({
-        title: 'Reserva confirmada',
-        icon: 'success',
-        confirmButtonText: 'cerrar'
-    })
+    
 
 }

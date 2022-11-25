@@ -12,6 +12,18 @@ const initReservas = async (PORT, USERID) => {
         const sucursales = await getSucursales(PORT);
                
         listaReservas.innerHTML = '';
+
+        // Ocurrió un error
+        if('msg' in auxReservas){
+            listaReservas.innerHTML += `
+            <div 
+            >
+                <div>No se encontraron reservas</div>
+            </div>
+            `
+            return;
+        }
+
         auxReservas.map( reserva => {
             const sucursalName = sucursales.find( s => s.id == reserva.branchId).name;  
             const date = new Date(reserva.dateTime);
@@ -21,8 +33,11 @@ const initReservas = async (PORT, USERID) => {
                 class="turno" 
                 id="${reserva.idReserva}"
             >
-                <div>${sucursalName}</div>
-                <div>${date.toLocaleDateString()} - ${date.getHours()}:${date.getMinutes()}hs </div>
+                <div>
+                    <div>${sucursalName}</div>
+                    <div>${date.toLocaleDateString()} - ${date.getHours()}:${date.getMinutes()}hs </div>
+                </div>
+                <div class="deleteIcon" data-value="${reserva.idReserva}"><img src="./images/delete.png"/></div>
             </div>
             `
         })
@@ -37,6 +52,31 @@ const initReservas = async (PORT, USERID) => {
                 }
             });
         });
+
+                
+        // BORRAR RESERVA
+
+        const deleteHTML = document.querySelectorAll('#content-user .turnosContainer .turno .deleteIcon');
+        deleteHTML.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                console.log("BAJA")
+                const idReserva = btn.dataset.value
+                console.log(idReserva)
+
+                const config = await getConfig();
+                const PORT =  config.PORT;
+                const USERID = config.USERID;
+
+                const rawResponse = await fetch(`http://localhost:${PORT}/api/reservas/${idReserva}`, {
+                    method: 'DELETE',
+                    headers: {'Accept': 'application/json'},
+                    body: JSON.stringify({userId: USERID})
+                });
+                console.log("respuesta: ", rawResponse)
+                const content = await rawResponse.json();
+            });
+        });
+
     } catch (error) {
         console.log(error)
         listaReservas.innerHTML += `

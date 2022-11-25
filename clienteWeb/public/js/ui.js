@@ -23,15 +23,19 @@ const showContent = async (id) => {
 const updateUI = async () => {
    try {
      const isAuthenticated = await auth0Client.isAuthenticated();
-      getConfig()
-     if (isAuthenticated) {
       
-        //sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
+     const config = await getConfig();
 
+     if (isAuthenticated) {
        const user = await auth0Client.getUser();
 
        const username = document.getElementById("username");
        username.innerText = user.given_name;
+
+       const email = document.querySelector('#reservaForm input');
+       email.value = user.email;
+       email.disabled = true;
+
 
        // Muestra elementos para los usuarios autenticados
        const authList = document.querySelectorAll(".auth");
@@ -39,7 +43,6 @@ const updateUI = async () => {
          item.classList.remove("hide");
        }
      } else {
-        //sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
        // Muestra elementos para los usuarios no autenticados
        const authList = document.querySelectorAll(".not-auth");
        for (var item of authList) {
