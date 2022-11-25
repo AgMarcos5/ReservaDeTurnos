@@ -115,17 +115,18 @@ const reservasHandler = async (req,res,action,ID,method) => {
                         
                         if(action == 'solicitar'){
                             _verify_(req,turno);
-                            msg = 'Reserva solicitada'
+                            msg = 'Reserva solicitada';
                         }
                         else 
                         if(action == 'confirmar'){
                             _confirm_(req,turno);
-                            msg = 'Reserva confirmada'
+                            msg = 'Reserva confirmada';
                         }
 
                         break;
                     case 'DELETE':
                             _delete_(req,turno);
+                            msg = 'Reserva borrada';
                         break;
                 }
                 turnos.find(element => element.idReserva == ID ? element = turno : false);

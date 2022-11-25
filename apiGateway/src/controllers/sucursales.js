@@ -24,8 +24,9 @@ const getSucursal = async (req,res,ID) => {
             method: "GET"
         });
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)
@@ -42,8 +43,9 @@ const getSucursales = async (req,res) => {
             method: "GET"
         });
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)

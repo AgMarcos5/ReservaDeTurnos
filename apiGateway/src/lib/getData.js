@@ -10,15 +10,20 @@ const getData = ({hostname, port, path, method, body = null}) => {
                 })
                 .on('end', () => {
                     request.body = JSON.parse(body);
-                    resolve(request.body)
+                    resolve(request)
                 })
                 .on('error', err => {
                     reject();
                 })
         });
 
-        if( method === 'POST' )
+        if( method === 'POST')
             request.write(JSON.stringify(body))
+        else
+        if( method === 'DELETE'){
+            request.setHeader('Content-Length', Buffer.byteLength(JSON.stringify(body)))
+            request.write(JSON.stringify(body))
+        }
 
         request.on('error', () => {
             reject("error al conectar");

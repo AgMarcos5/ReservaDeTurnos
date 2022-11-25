@@ -32,8 +32,9 @@ const getTurnos = async (req,res, queryParams=null) => {
 
         console.log(`/api/reservas${qp}`)
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)
@@ -49,8 +50,9 @@ const getReservaByID = async (req,res,ID) => {
             method: "GET"
         });
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)
@@ -69,8 +71,9 @@ const solicitarReserva = async (req,res,ID) => {
             method: "POST", 
         });
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)
@@ -87,8 +90,9 @@ const confirmarReserva = async (req,res,ID) => {
             method: "POST", 
         });
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)
@@ -97,6 +101,7 @@ const confirmarReserva = async (req,res,ID) => {
 
 const bajaReserva = async (req,res,ID) => {
     try {
+        await bodyParser(req)
         const data = await getData({
             ...req,
             ...options, 
@@ -104,8 +109,9 @@ const bajaReserva = async (req,res,ID) => {
             method: "DELETE"
         });
         
-        res.writeHead(200, { ...headers, "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
+        const statusCode = data.res.statusCode;
+        res.writeHead(statusCode, { ...headers, "Content-Type": "application/json" });
+        res.write(JSON.stringify(data.body));
         res.end();
     } catch (error) {
         responseError(res,error)
