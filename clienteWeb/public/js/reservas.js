@@ -31,7 +31,7 @@ const initReservas = async (PORT, USERID, header) => {
             listaReservas.innerHTML += `
             <div 
                 class="turno" 
-                id="${reserva.idReserva}"
+                id="r${reserva.idReserva}"
             >
                 <div>
                     <div>${sucursalName}</div>
@@ -42,7 +42,7 @@ const initReservas = async (PORT, USERID, header) => {
             `
         })
         
-        // Seleccionar turno
+        // SELECCIONAR TURNO
         const reservasHTML = document.querySelectorAll('#content-user .turnosContainer .turno');
         reservasHTML.forEach(reserva => {
             reserva.addEventListener('click', () => {
@@ -55,14 +55,11 @@ const initReservas = async (PORT, USERID, header) => {
 
                 
         // BORRAR RESERVA
-
         const deleteHTML = document.querySelectorAll('#content-user .turnosContainer .turno .deleteIcon');
         deleteHTML.forEach(btn => {
             btn.addEventListener('click', async () => {
-                console.log("BAJA")
                 const idReserva = btn.dataset.value
-                console.log(idReserva)
-
+                const reservaHTML = document.querySelector(`#listaReservas #r${idReserva}`)
                 const config = await getConfig();
                 const PORT =  config.PORT;
                 const USERID = config.USERID;
@@ -72,11 +69,18 @@ const initReservas = async (PORT, USERID, header) => {
                     headers: header,
                     body: JSON.stringify({userId: USERID})
                 });
-                console.log("respuesta: ", rawResponse)
-                const content = await rawResponse.json();
-
+                if(rawResponse.status === 200){
+                    reservaHTML.remove();
+                    if (document.getElementById('listaReservas').innerHTML.trim() == "") {
+                        listaReservas.innerHTML += `
+                        <div 
+                        >
+                            <div>No se encontraron reservas</div>
+                        </div>
+                        `
+                    }
+                }
                 
-
             });
         });
 

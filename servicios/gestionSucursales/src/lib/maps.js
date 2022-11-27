@@ -148,7 +148,8 @@ const initMaps = async (req,res) => {
                  "description": `Marcador de la sucursal ${element['name']} con latitud: ${element['lat']} y con longitud ${element['lng']}`,
                  "category_name": element['name'] 
              }
-             JSON.parse( await postMarkers(marcador) );
+             //JSON.parse( await postMarkers(marcador) );
+             const markers = await postMarkers(marcador);
              });
  
 

@@ -8,8 +8,6 @@ const configureClient = async () => {
     config = await response.json();
 
     auth0Client = await auth0.createAuth0Client({
-      //responseType: "token id_token",
-      //audience: "tQeghMOCcruiyvJN5YyNqysMtBftWvkt",
       domain: config.domain,
       clientId: config.clientId,
       authorizationParams: {
@@ -18,6 +16,7 @@ const configureClient = async () => {
     });
 };
 
+// LOGIN
 const login = async (targetUrl) => {
     try {  
       const options = {
@@ -31,12 +30,13 @@ const login = async (targetUrl) => {
       }
   
       await auth0Client.loginWithRedirect(options);
-      sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
+      //sessionStorage.setItem('PORT', config.APIGATEWAY_AUTH_PORT);
     } catch (err) {
       console.log("Login error", err);
     }
 };
 
+// LOGOUT
 const logout = async () => {
     try {
       sessionStorage.clear();
@@ -115,33 +115,13 @@ window.onload = async () => {
         window.history.replaceState({}, document.title, "/");
     }
 
-    console.log("hola?")
     updateUI();
 
 }
 
 
-async function testEndpoint() {
-  try {
-    const response = await fetch("http://localhost:4000/api/auth/private", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Access-Control-Request-Headers": "no-cors",
-        "Access-Control-Allow-Origin": "no-cors",
-      },
-    });
-    if (response.status === 200) {
-      alert("OK");
-    } else {
-      alert(`Error: ${response.status}`);
-    }
-  } catch (err) {
-    alert(`Error: ${err.message}`);
-  }
-}
+const getConfig = async () => { 
 
-const getConfig = async () => {
   const isAuthenticated = await auth0Client.isAuthenticated();
   if(isAuthenticated){
     const user = await auth0Client.getUser();
@@ -153,8 +133,6 @@ const getConfig = async () => {
     sessionStorage.setItem('TOKEN', tokenraw);
     sessionStorage.setItem('USERID', userId);
 
-    console.log("TOKEN",token)
-
     return {
       PORT: config.APIGATEWAY_AUTH_PORT,
       USERID: userId,
@@ -165,6 +143,7 @@ const getConfig = async () => {
   } else{
     sessionStorage.setItem('PORT', config.APIGATEWAY_PORT);
     sessionStorage.setItem('USERID', 0);
+
     return {
       PORT: config.APIGATEWAY_PORT,
       USERID: 0,
@@ -172,8 +151,6 @@ const getConfig = async () => {
     } 
   }
 }
-
-
 
 
 // EVENTOS
