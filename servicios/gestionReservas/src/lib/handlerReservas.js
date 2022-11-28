@@ -15,7 +15,7 @@ const headers = {
 
 const _verify_ = (req,turnoRequired) => {
 
-    if (turnoRequired.status == 0) {
+    if (turnoRequired.status == 0 || (turnoRequired.status == 1 && turnoRequired.userId == req.body.userId)) {
         turnoRequired.status = 1;
         turnoRequired.userId = req.body.userId;
     

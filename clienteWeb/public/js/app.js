@@ -97,7 +97,7 @@ const solicitarTurno = async () => {
   if (turnoHtml) {
     const idReserva = turnoHtml.id;
     const listaTurnos = await turnos;
-    const turnoSeleccionado = listaTurnos[idReserva - 1];
+    const turnoSeleccionado = listaTurnos.find(t => t.idReserva == idReserva);
 
     if (turnoSeleccionado.status == 0 && email) {
       // turno libre
